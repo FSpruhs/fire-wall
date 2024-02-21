@@ -24,7 +24,7 @@ public abstract class Wall {
   public abstract boolean validateRequest(Request request);
 
   public void validateRequests(List<Request> requests) {
-    LOG.info("--------Packet Filter------------");
+    LOG.info("--------------------");
     for (Request request : requests) {
       LOG.info("Request: {}", request);
       LOG.info("Result: {}", (validateRequest(request) ? "Permitted" : "Rejected"));
