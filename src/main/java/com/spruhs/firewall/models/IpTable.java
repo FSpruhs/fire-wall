@@ -3,22 +3,13 @@ package com.spruhs.firewall.models;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.LinkedList;
-import java.util.List;
 
-public class IpTable {
+public class IpTable extends Wall {
 
   private static final Logger LOG = LogManager.getLogger(IpTable.class);
 
-  private final List<Entry> entries = new LinkedList<>();
-  private final Mode mode;
-
   public IpTable(Mode mode) {
-    this.mode = mode;
-  }
-
-  public void add(Entry entry) {
-    entries.add(entry);
+    super(mode);
   }
 
   public boolean validateRequest(Request request) {
@@ -34,12 +25,4 @@ public class IpTable {
     return entries.stream().filter(entry -> entry.matches(request)).findFirst().orElse(null);
   }
 
-  public void validateRequests(List<Request> requests) {
-    LOG.info("--------IP Table------------");
-    for (Request request : requests) {
-      LOG.info("Request: {}", request);
-      LOG.info("Result: {}", (validateRequest(request) ? "Permitted" : "Rejected"));
-      LOG.info("--------------------");
-    }
-  }
 }

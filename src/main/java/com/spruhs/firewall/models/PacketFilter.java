@@ -3,22 +3,12 @@ package com.spruhs.firewall.models;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.LinkedList;
-import java.util.List;
-
-public class PacketFilter {
+public class PacketFilter extends Wall {
 
   private static final Logger LOG = LogManager.getLogger(PacketFilter.class);
 
-  private final List<Entry> entries = new LinkedList<>();
-  private final Mode mode;
-
   public PacketFilter(Mode mode) {
-    this.mode = mode;
-  }
-
-  public void add(Entry entry) {
-    entries.add(entry);
+    super(mode);
   }
 
   public boolean validateRequest(Request request) {
@@ -35,14 +25,5 @@ public class PacketFilter {
       .filter(entry -> entry.matches(request))
       .reduce((first, second) -> second)
       .orElse(null);
-  }
-
-  public void validateRequests(List<Request> requests) {
-    LOG.info("--------Packet Filter------------");
-    for (Request request : requests) {
-      LOG.info("Request: {}", request);
-      LOG.info("Result: {}", (validateRequest(request) ? "Permitted" : "Rejected"));
-      LOG.info("--------------------");
-    }
   }
 }
