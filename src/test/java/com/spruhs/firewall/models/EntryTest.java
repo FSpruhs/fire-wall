@@ -11,12 +11,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class EntryTest {
 
   @ParameterizedTest
-  @MethodSource("test")
+  @MethodSource("data")
   void matches(Entry entry, Request request, boolean expected) {
     assertEquals(expected, entry.matches(request));
   }
 
-  static Stream<Arguments> test() {
+  static Stream<Arguments> data() {
     return Stream.of(
       Arguments.of(
         new Entry(1, "*", "*", "*", "*", Action.REJECT),
