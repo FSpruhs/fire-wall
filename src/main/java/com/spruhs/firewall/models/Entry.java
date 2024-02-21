@@ -9,13 +9,13 @@ public record Entry(
   Action action
 ) {
 
-    public Entry {
-      validateId(id);
-      validatePort(sourcePort);
-      validatePort(destinationPort);
-      validateIp(sourceIp);
-      validateIp(destinationIp);
-    }
+  public Entry {
+    validateId(id);
+    validatePort(sourcePort);
+    validatePort(destinationPort);
+    validateIp(sourceIp);
+    validateIp(destinationIp);
+  }
 
   private void validateId(int id) {
     if (id <= 0) {
@@ -41,14 +41,14 @@ public record Entry(
     return matchesSource(request) && matchesDestination(request);
   }
 
-    private boolean matchesSource(Request request) {
-        return (sourceIp.equals("*") || sourceIp.equals(request.sourceIp())) &&
-             (sourcePort.equals("*") || sourcePort.equals(String.valueOf(request.sourcePort())));
-    }
+  private boolean matchesSource(Request request) {
+    return (sourceIp.equals("*") || sourceIp.equals(request.sourceIp())) &&
+           (sourcePort.equals("*") || sourcePort.equals(String.valueOf(request.sourcePort())));
+  }
 
-    private boolean matchesDestination(Request request) {
-        return (destinationIp.equals("*") || destinationIp.equals(request.destIp())) &&
-             (destinationPort.equals("*") || destinationPort.equals(String.valueOf(request.destPort())));
-    }
+  private boolean matchesDestination(Request request) {
+    return (destinationIp.equals("*") || destinationIp.equals(request.destIp())) &&
+           (destinationPort.equals("*") || destinationPort.equals(String.valueOf(request.destPort())));
+  }
 
 }
