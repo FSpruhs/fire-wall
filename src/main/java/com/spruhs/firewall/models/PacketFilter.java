@@ -3,21 +3,23 @@ package com.spruhs.firewall.models;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static com.spruhs.firewall.models.Action.PERMIT;
+
 public class PacketFilter extends Wall {
 
   private static final Logger LOG = LogManager.getLogger(PacketFilter.class);
 
-  public PacketFilter(Mode mode) {
-    super(mode);
+  public PacketFilter(Action defaultAction) {
+    super(defaultAction);
   }
 
   public boolean validateRequest(Request request) {
     Entry matchedEntry = findLastMatchingEntry(request);
     if (matchedEntry != null) {
       LOG.info("Request matches entry: {}", matchedEntry);
-      return matchedEntry.action() == Action.PERMIT;
+      return matchedEntry.action() == PERMIT;
     }
-    return mode == Mode.PERMIT_ALL;
+    return defaultAction == PERMIT;
   }
 
   private Entry findLastMatchingEntry(Request request) {

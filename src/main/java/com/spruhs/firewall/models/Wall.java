@@ -11,10 +11,10 @@ public abstract class Wall {
   private static final Logger LOG = LogManager.getLogger(Wall.class);
 
   protected final List<Entry> entries = new LinkedList<>();
-  protected final Mode mode;
+  protected final Action defaultAction;
 
-  protected Wall(Mode mode) {
-    this.mode = mode;
+  protected Wall(Action defaultAction) {
+    this.defaultAction = defaultAction;
   }
 
   public void add(Entry entry) {

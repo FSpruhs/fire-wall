@@ -1,7 +1,6 @@
 package com.spruhs.firewall;
 
 import com.spruhs.firewall.models.Entry;
-import com.spruhs.firewall.models.Mode;
 import com.spruhs.firewall.models.PacketFilter;
 import com.spruhs.firewall.models.Request;
 import com.spruhs.firewall.models.IpTable;
@@ -19,7 +18,7 @@ public class FireWall {
   }
 
   private static void testPacketFilter() {
-    PacketFilter packetFilter = new PacketFilter(Mode.REJECT_ALL);
+    PacketFilter packetFilter = new PacketFilter(REJECT);
     packetFilter.add(new Entry(1, "141.71.1.3", "29", "*", "*", PERMIT));
     packetFilter.add(new Entry(2, "*", "*", "10.71.132.2", "23", REJECT));
     packetFilter.add(new Entry(3, "*", "*", "*", "23", PERMIT));
@@ -37,7 +36,7 @@ public class FireWall {
   }
 
   private static void testIpTables() {
-    IpTable ipTable = new IpTable(Mode.REJECT_ALL);
+    IpTable ipTable = new IpTable(REJECT);
     ipTable.add(new Entry(1, "141.71.1.3", "29", "*", "*", PERMIT));
     ipTable.add(new Entry(2, "*", "*", "10.71.132.2", "23", REJECT));
     ipTable.add(new Entry(3, "*", "*", "*", "23", PERMIT));
