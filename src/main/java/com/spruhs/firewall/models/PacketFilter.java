@@ -1,9 +1,14 @@
 package com.spruhs.firewall.models;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.LinkedList;
 import java.util.List;
 
 public class PacketFilter {
+
+  private static final Logger LOG = LogManager.getLogger(PacketFilter.class);
 
   private final List<Entry> entries = new LinkedList<>();
   private final Mode mode;
@@ -17,32 +22,27 @@ public class PacketFilter {
   }
 
   public boolean validateRequest(Request request) {
-    int id = 0;
-    for (Entry entry : entries) {
-      if (entry.matches(request)) {
-        id = entry.id();
-      }
-    }
-    if (id != 0) {
-      System.out.println("Request matches entry: " + findById(id));
-      return true;
+    Entry matchedEntry = findLastMatchingEntry(request);
+    if (matchedEntry != null) {
+      LOG.info("Request matches entry: {}", matchedEntry);
+      return matchedEntry.action() == Action.PERMIT;
     }
     return mode == Mode.PERMIT_ALL;
   }
 
-  private String findById(int id) {
-    return entries.stream().filter(entry -> entry.id() == id).findFirst().toString();
+  private Entry findLastMatchingEntry(Request request) {
+    return entries.stream()
+      .filter(entry -> entry.matches(request))
+      .reduce((first, second) -> second)
+      .orElse(null);
   }
 
   public void validateRequests(List<Request> requests) {
+    LOG.info("--------Packet Filter------------");
     for (Request request : requests) {
-      System.out.println("--------------------");
-      System.out.println("Request: " + request);
-      System.out.println("Result: " + (validateRequest(request) ? "Permitted" : "Rejected"));
-      System.out.println("--------------------");
-      System.out.println("\n");
+      LOG.info("Request: {}", request);
+      LOG.info("Result: {}", (validateRequest(request) ? "Permitted" : "Rejected"));
+      LOG.info("--------------------");
     }
   }
-
-
 }

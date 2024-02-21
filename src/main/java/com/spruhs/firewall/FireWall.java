@@ -26,7 +26,6 @@ public class FireWall {
     packetFilter.add(new Entry(4, "141.71.1.2", "28", "10.71.132.3", "27", REJECT));
     packetFilter.add(new Entry(5, "141.71.1.2", "28", "*", "*", PERMIT));
     packetFilter.add(new Entry(6, "141.71.1.1", "*", "10.71.132.4", "110", REJECT));
-    packetFilter.add(new Entry(7, "*", "*", "*", "*", PERMIT));
 
     List<Request> requests = List.of(
       new Request("141.71.1.2", 28, "10.71.132.3", 27),

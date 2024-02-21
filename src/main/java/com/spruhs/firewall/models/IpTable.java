@@ -1,10 +1,14 @@
 package com.spruhs.firewall.models;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class IpTable {
+
+  private static final Logger LOG = LogManager.getLogger(IpTable.class);
 
   private final List<Entry> entries = new LinkedList<>();
   private final Mode mode;
@@ -18,22 +22,24 @@ public class IpTable {
   }
 
   public boolean validateRequest(Request request) {
-    for (Entry entry : entries) {
-      if (entry.matches(request)) {
-        System.out.println("Request matches entry: " + entry);
-        return entry.action() == Action.PERMIT;
-      }
+    Entry matchedEntry = findFirstMatchingEntry(request);
+    if (matchedEntry != null) {
+      LOG.info("Request matches entry: {}", matchedEntry);
+      return matchedEntry.action() == Action.PERMIT;
     }
     return mode == Mode.PERMIT_ALL;
   }
 
+  private Entry findFirstMatchingEntry(Request request) {
+    return entries.stream().filter(entry -> entry.matches(request)).findFirst().orElse(null);
+  }
+
   public void validateRequests(List<Request> requests) {
+    LOG.info("--------IP Table------------");
     for (Request request : requests) {
-      System.out.println("--------------------");
-      System.out.println("Request: " + request);
-      System.out.println("Result: " + (validateRequest(request) ? "Permitted" : "Rejected"));
-      System.out.println("--------------------");
-      System.out.println("\n");
+      LOG.info("Request: {}", request);
+      LOG.info("Result: {}", (validateRequest(request) ? "Permitted" : "Rejected"));
+      LOG.info("--------------------");
     }
   }
 }
