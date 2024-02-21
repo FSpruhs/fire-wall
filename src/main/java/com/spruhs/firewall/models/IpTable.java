@@ -4,12 +4,12 @@ package com.spruhs.firewall.models;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Table {
+public class IpTable {
 
   private final List<Entry> entries = new LinkedList<>();
   private final Mode mode;
 
-  public Table(Mode mode) {
+  public IpTable(Mode mode) {
     this.mode = mode;
   }
 

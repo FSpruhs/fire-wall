@@ -10,23 +10,30 @@ public record Entry(
 ) {
 
     public Entry {
-        validatePort(sourcePort);
-        validatePort(destinationPort);
-        validateIp(sourceIp);
-        validateIp(destinationIp);
+      validateId(id);
+      validatePort(sourcePort);
+      validatePort(destinationPort);
+      validateIp(sourceIp);
+      validateIp(destinationIp);
     }
+
+  private void validateId(int id) {
+    if (id <= 0) {
+      throw new IllegalArgumentException("Invalid id: " + id);
+    }
+  }
 
   private void validatePort(String port) {
     String regex = "^\\d+$|^\\*$";
     if (port == null || !port.matches(regex)) {
-      throw new IllegalArgumentException("Invalid input: " + port);
+      throw new IllegalArgumentException("Invalid port: " + port);
     }
   }
 
   private void validateIp(String ip) {
     String regex = "^\\d+\\.\\d+\\.\\d+\\.\\d+$|^\\*$";
     if (ip == null || !ip.matches(regex)) {
-      throw new IllegalArgumentException("Invalid input: " + ip);
+      throw new IllegalArgumentException("Invalid ip: " + ip);
     }
   }
 
